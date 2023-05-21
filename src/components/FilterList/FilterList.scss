@@ -1,9 +1,11 @@
 .filter {
   display: flex;
   flex-flow: column;
-  width: 230px;
+  width: 100%;
+  align-items: center;
   background-color: white;
   border-radius: 5px;
+  margin-bottom: 20px;
   box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
 
   & > span {
@@ -14,12 +16,15 @@
     font-weight: 600;
   }
 
-  .filter__list {
+  &__list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
-  .filter__item {
+  &__item {
     position: relative;
     height: 40px;
     display: flex;
@@ -28,5 +33,16 @@
     &:hover {
       background-color: #f1fcff;
     }
+  }
+}
+
+@media (min-width: 768px) {
+  .filter {
+    width: 230px;
+    align-items: flex-start;
+  }
+
+  .filter__list {
+    display: block;
   }
 }
