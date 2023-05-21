@@ -1,0 +1,22 @@
+.app {
+  margin-top: 50px;
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: flex-start;
+
+  .filter {
+    grid-area: filter;
+    margin-right: 20px;
+  }
+
+  .tabs {
+    grid-area: tabs;
+    margin-bottom: 20px;
+  }
+
+  .ticket-list {
+    grid-area: tickets;
+  }
+}

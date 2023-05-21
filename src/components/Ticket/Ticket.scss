@@ -1,0 +1,47 @@
+.ticket {
+  width: 500px;
+  height: 180px;
+  display: grid;
+  grid-template-areas:
+    'coast coast logo'
+    'description description description';
+  background-color: white;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
+
+  & > span {
+    grid-area: coast;
+    justify-self: start;
+    align-self: center;
+    margin-left: 2.5rem;
+    color: #2196f3;
+    font-size: 24px;
+  }
+
+  & > img {
+    grid-area: logo;
+    justify-self: center;
+    align-self: center;
+  }
+
+  &__description {
+    grid-area: description;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: center;
+    align-items: flex-start;
+
+    & > li > span:first-child {
+      color: #a0b0b9;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    & > li > span:last-child {
+      font-size: 14px;
+    }
+  }
+}

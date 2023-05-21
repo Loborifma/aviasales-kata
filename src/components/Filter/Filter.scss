@@ -1,0 +1,27 @@
+.filter__field {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+
+  &::before {
+    content: url('../../icons/Checkbox.png');
+    margin-left: 1rem;
+  }
+
+  &:has(.filter__input:checked)::before {
+    content: url('../../icons/Checked.png');
+  }
+}
+
+.filter__input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 100%;
+}
+
+.filter__name {
+  display: block;
+  padding-left: 1rem;
+  font-size: 13px;
+}
