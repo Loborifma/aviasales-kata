@@ -5,7 +5,7 @@ import FilterList from '../FilterList';
 import Tabs from '../Tabs';
 import TicketList from '../TicketList';
 import Pagination from '../Pagination';
-import logo from '../../icons/Logo.png';
+import logo from '../../assets/icons/Logo.png';
 
 import './App.scss';
 

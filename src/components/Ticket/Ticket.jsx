@@ -1,6 +1,6 @@
 import React from 'react';
 
-import aviaLogo from '../../icons/S7 Logo.png';
+import aviaLogo from '../../assets/icons/S7 Logo.png';
 
 import './Ticket.scss';
 

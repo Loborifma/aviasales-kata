@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './Tabs.scss';
+import { sort } from '../../redux/actions';
 
 export const Tabs = () => {
   const options = [
-    { value: 'Самый дешевый', key: 'chp' },
-    { value: 'Самый быстрый', key: 'fst' },
-    { value: 'Оптимальный', key: 'opt' },
+    { value: 'Самый дешевый', key: 'cheapest' },
+    { value: 'Самый быстрый', key: 'fastest' },
+    { value: 'Оптимальный', key: 'optimal' },
   ];
 
-  const [selectedOption, setSelectedOption] = useState(options[0].key);
+  const selectedOption = useSelector((state) => {
+    const { sortReducer } = state;
+    return sortReducer.sort;
+  });
+  const dispatch = useDispatch();
 
-  const handleChange = (e) => {
-    setSelectedOption(e.target.value);
+  const handleChange = (event) => {
+    dispatch(sort(event.target.value));
   };
 
   return (
