@@ -16,7 +16,7 @@ export const FilterList = () => {
     dispatch(filterAll());
   };
 
-  const handleChecked = (id, checked) => {
+  const handleChecked = (id) => {
     dispatch(filter(id));
   };
 
