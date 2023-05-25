@@ -4,7 +4,9 @@ import * as types from '../types';
 
 const initialState = {
   tickets: [],
+  stop: false,
   searchId: '',
+  error: false,
 };
 
 export const ticketListReducer = (state = initialState, action) => {
@@ -21,9 +23,15 @@ export const ticketListReducer = (state = initialState, action) => {
         element.id = uuidv4();
         return element;
       });
+      const newTickets = [...state.tickets, ...tickets];
+      const stop = action.data['stop'];
+      const error = action.error;
+
       return {
         ...state,
-        tickets,
+        tickets: newTickets,
+        stop,
+        error,
       };
     }
     default:

@@ -39,15 +39,33 @@ export function initSearchId() {
 
 export function loadTickets(searchId) {
   return async (dispatch) => {
+    let response;
     try {
-      const response = await fetch(_baseUrl + `/tickets?searchId=${searchId}`);
+      response = await fetch(_baseUrl + `/tickets?searchId=${searchId}`);
       const jsonData = await response.json();
       dispatch({
         type: types.LOAD_TICKETS,
         data: jsonData,
       });
     } catch (error) {
-      initSearchId();
+      switch (response.status) {
+        case 404: {
+          initSearchId();
+          break;
+        }
+        case 500: {
+          loadTickets(searchId);
+          dispatch({
+            type: types.LOAD_TICKETS,
+            data: { tickets: [], stop: false },
+            error: true,
+          });
+          break;
+        }
+        default: {
+          throw new Error('Произошла не предвиденная ошибка при загрузке билетов', error);
+        }
+      }
     }
   };
 }

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Wrapper from '../Wrapper';
 import FilterList from '../FilterList';
 import Tabs from '../Tabs';
 import TicketList from '../TicketList';
-import Pagination from '../Pagination';
 import logo from '../../assets/icons/Logo.png';
 
 import './App.scss';
@@ -20,7 +19,6 @@ export const App = () => {
         <div className="app__tickets">
           <Tabs />
           <TicketList />
-          <Pagination />
         </div>
       </main>
     </Wrapper>

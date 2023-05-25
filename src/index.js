@@ -10,6 +10,11 @@ import './index.scss';
 
 const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: { warnAfter: 128 },
+      serializableCheck: { warnAfter: 128 },
+    }),
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
