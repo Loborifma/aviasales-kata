@@ -9,7 +9,15 @@ import { getAmountTickets, sortTickets, filterTickets } from '../../utils/utils.
 import ProgressBar from '../ProgressBar';
 
 export const TicketList = () => {
-  const session = useSelector((state) => state.ticketListReducer);
+  const session = useSelector((state) => {
+    const { tickets, stop, searchId, error } = state.ticketListReducer;
+    return {
+      tickets,
+      stop,
+      searchId,
+      error,
+    };
+  });
   const sortMethod = useSelector((state) => state.sortReducer.sort);
   const filterOptions = useSelector((state) => state.filtersReducer.items);
   const dispatch = useDispatch();
@@ -20,7 +28,7 @@ export const TicketList = () => {
   const [isFirstPack, setIsFirstPack] = useState(true);
   const [isEmptyTicketList, setIsEmptyTicketList] = useState(false);
 
-  const _amountPerPack = 499;
+  const _lengthTicketArrayPerPack = 499;
 
   useEffect(() => {
     dispatch(initSearchId());
@@ -38,8 +46,9 @@ export const TicketList = () => {
   }, [session.searchId, session.tickets, session.error]);
 
   useEffect(() => {
-    if (chunkedTickets.length >= packedTickets.length - 20 && packedTickets.length) {
-      updatePackTickets(session.tickets, sortMethod, packedTickets.length);
+    if (chunkedTickets.length >= packedTickets.length - 60 && packedTickets.length) {
+      const sortedTickets = updatePackTickets(session.tickets, sortMethod, packedTickets.length);
+      updateChunkTickets(sortedTickets, chunkedTickets.length);
     }
   }, [chunkedTickets]);
 
@@ -48,21 +57,21 @@ export const TicketList = () => {
       const filterOptionsOn = filterOptions
         .map((element) => (element.checked ? element : ''))
         .filter((el) => el !== '');
-      const sortedPack = updatePackTickets(session.tickets, sortMethod, filterOptionsOn);
+      const sortedPack = updatePackTickets(session.tickets, sortMethod, 0, filterOptionsOn);
       updateChunkTickets(sortedPack);
     }
   }, [sortMethod, filterOptions]);
 
-  const handleShowMoreTickets = () => {
-    const chunk = chunkTicketGenerator.next().value;
-    setChunkedTickets((prevArr) => [...prevArr, ...chunk]);
+  const displayMoreTickets = () => {
+    const nextChunk = chunkTicketGenerator.next().value;
+    setChunkedTickets((prevArray) => [...prevArray, ...nextChunk]);
   };
 
-  const updatePackTickets = (tickets, sortMethod, filters = [], offset = 0) => {
-    const mathOffset = offset ? offset * 1.5 : _amountPerPack;
-    const generator = getAmountTickets(tickets, mathOffset);
-    const pack = generator.next().value;
-    const filteredPack = filterTickets(pack, filters);
+  const updatePackTickets = (tickets, sortMethod, lengthTicketArray = 0, filters = []) => {
+    const extendedLengthArray = lengthTicketArray ? lengthTicketArray * 1.5 : _lengthTicketArrayPerPack;
+    const generator = getAmountTickets(tickets, extendedLengthArray);
+    const nextPack = generator.next().value;
+    const filteredPack = filterTickets(nextPack, filters);
 
     if (!filteredPack.length) {
       setIsEmptyTicketList(true);
@@ -73,10 +82,15 @@ export const TicketList = () => {
     return sortedPack;
   };
 
-  const updateChunkTickets = (sortedTickets) => {
-    const chunkGenerator = getAmountTickets(sortedTickets);
+  const updateChunkTickets = (sortedTickets, lengthTicketArray = 0) => {
+    let prevChunkTickets = [];
+    if (lengthTicketArray) {
+      prevChunkTickets = getAmountTickets(sortedTickets, lengthTicketArray).next().value;
+    }
+    const chunkGenerator = getAmountTickets(sortedTickets, undefined, lengthTicketArray);
     setChunkTicketGenerator(chunkGenerator);
-    setChunkedTickets(chunkGenerator.next().value);
+    const nextChunk = chunkGenerator.next().value;
+    setChunkedTickets([...prevChunkTickets, ...nextChunk]);
   };
 
   return (
@@ -97,7 +111,7 @@ export const TicketList = () => {
           })
         )}
       </ul>
-      {!isEmptyTicketList && <Pagination handleShowMoreTickets={handleShowMoreTickets} />}
+      {!isEmptyTicketList && <Pagination displayMoreTickets={displayMoreTickets} />}
     </>
   );
 };

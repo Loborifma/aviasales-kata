@@ -1,86 +1,85 @@
-export const updateToggleValue = (arr, id, propertyName) => {
-  const prevItems = arr;
-  const indx = prevItems.findIndex((element) => element.id === id);
+export const updateToggleValue = (array, id, propertyName) => {
+  const prevArray = array;
+  const currentItem = prevArray.findIndex((element) => element.id === id);
 
-  const oldItem = prevItems[indx];
+  const oldItem = prevArray[currentItem];
   const newItem = { ...oldItem, checked: !oldItem[propertyName] };
 
-  return [...prevItems.slice(0, indx), newItem, ...prevItems.slice(indx + 1)];
+  return [...prevArray.slice(0, currentItem), newItem, ...prevArray.slice(currentItem + 1)];
 };
 
 export const sortTickets = (tickets, selectedOption) => {
-  let newArr;
+  let newArray;
   switch (selectedOption) {
     case 'fastest': {
-      newArr = tickets.sort((el1, el2) => {
-        const durationPrev = el1.segments[0].duration + el1.segments[1].duration;
-        const durationNext = el2.segments[0].duration + el2.segments[1].duration;
+      newArray = tickets.sort((prevElement, nextElement) => {
+        const durationPrev = prevElement.segments[0].duration + prevElement.segments[1].duration;
+        const durationNext = nextElement.segments[0].duration + nextElement.segments[1].duration;
         return durationPrev - durationNext;
       });
       break;
     }
     case 'optimal': {
-      newArr = tickets.sort((el1, el2) => {
-        const durationPrev = el1.segments[0].duration + el1.segments[1].duration;
-        const durationNext = el2.segments[0].duration + el2.segments[1].duration;
-        const optValuePrev = el1.price / 10 + durationPrev;
-        const optValueNext = el2.price / 10 + durationNext;
+      newArray = tickets.sort((prevElement, nextElement) => {
+        const durationPrev = prevElement.segments[0].duration + prevElement.segments[1].duration;
+        const durationNext = nextElement.segments[0].duration + nextElement.segments[1].duration;
+        const optValuePrev = prevElement.price / 10 + durationPrev;
+        const optValueNext = nextElement.price / 10 + durationNext;
         return optValuePrev - optValueNext;
       });
       break;
     }
     default: {
-      newArr = tickets.sort((el1, el2) => el1.price - el2.price);
+      newArray = tickets.sort((prevElement, nextElement) => prevElement.price - nextElement.price);
     }
   }
-  return [...newArr];
+  return [...newArray];
 };
 
 export const filterTickets = (tickets, filters) => {
-  const copyArr = JSON.parse(JSON.stringify(tickets));
-  let newArr = [];
-  if (!filters.length) return copyArr;
+  let newArray = [];
+  if (!filters.length) return tickets;
   if (Array.isArray(filters)) {
     filters
       .sort((a, b) => b.id - a.id)
       .map((el) => {
         switch (el.name) {
           case 'No transfer': {
-            const filteredArr = copyArr.filter((el) => {
+            const filteredArray = tickets.filter((el) => {
               return !el.segments[0].stops.length || !el.segments[1].stops.length;
             });
-            return newArr.push(...filteredArr);
+            return newArray.push(...filteredArray);
           }
           case '1 transfer': {
-            const filteredArr = copyArr.filter((el) => {
+            const filteredArray = tickets.filter((el) => {
               return el.segments[0].stops.length === 1 || el.segments[1].stops.length === 1;
             });
-            return newArr.push(...filteredArr);
+            return newArray.push(...filteredArray);
           }
           case '2 transfer': {
-            const filteredArr = copyArr.filter((el) => {
+            const filteredArray = tickets.filter((el) => {
               return el.segments[0].stops.length === 2 || el.segments[1].stops.length === 2;
             });
-            return newArr.push(...filteredArr);
+            return newArray.push(...filteredArray);
           }
           case '3 transfer': {
-            const filteredArr = copyArr.filter((el) => {
+            const filteredArray = tickets.filter((el) => {
               return el.segments[0].stops.length === 3 || el.segments[1].stops.length === 3;
             });
-            return newArr.push(...filteredArr);
+            return newArray.push(...filteredArray);
           }
           default: {
-            return newArr.push(...copyArr);
+            return newArray.push(...tickets);
           }
         }
       });
   }
-  const tmpArr = new Set(newArr);
-  return [...tmpArr];
+  const arrayWithoutCopyItems = new Set(newArray);
+  return [...arrayWithoutCopyItems];
 };
 
-export function* getAmountTickets(tickets, amount = 5) {
-  let index = 0;
+export function* getAmountTickets(tickets, amount = 50, offset = 0) {
+  let index = offset;
   while (index < tickets.length) {
     const chunk = tickets.slice(index, index + amount);
     index += amount;

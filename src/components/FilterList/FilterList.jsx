@@ -12,11 +12,11 @@ export const FilterList = () => {
   });
   const dispatch = useDispatch();
 
-  const handleCheckedAll = () => {
+  const handleCheckAll = () => {
     dispatch(filterAll());
   };
 
-  const handleChecked = (id) => {
+  const handleCheckOne = (id) => {
     dispatch(filter(id));
   };
 
@@ -28,13 +28,13 @@ export const FilterList = () => {
           if (event.id === 1) {
             return (
               <li className="filter__item" key={event.id}>
-                <Filter {...event} handleChecked={handleCheckedAll} />
+                <Filter {...event} handleChecked={handleCheckAll} />
               </li>
             );
           } else {
             return (
               <li className="filter__item" key={event.id}>
-                <Filter {...event} handleChecked={handleChecked} />
+                <Filter {...event} handleChecked={handleCheckOne} />
               </li>
             );
           }

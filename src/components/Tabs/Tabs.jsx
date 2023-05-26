@@ -17,7 +17,7 @@ export const Tabs = () => {
   });
   const dispatch = useDispatch();
 
-  const handleChange = (event) => {
+  const handleChangeSortMethod = (event) => {
     dispatch(sort(event.target.value));
   };
 
@@ -28,7 +28,7 @@ export const Tabs = () => {
         return (
           <li className={`tabs__item ${isChecked && 'checked'}`} key={e.key}>
             <label className="tabs__field">
-              <input type="radio" value={e.key} checked={isChecked} name="Tabs" onChange={handleChange} />
+              <input type="radio" value={e.key} checked={isChecked} name="Tabs" onChange={handleChangeSortMethod} />
               <span>{e.value}</span>
             </label>
           </li>

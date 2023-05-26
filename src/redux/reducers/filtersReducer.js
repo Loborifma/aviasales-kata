@@ -16,22 +16,22 @@ export const filtersReducer = (state = initialState, action) => {
     case types.FILTER: {
       const items = state.items;
 
-      let newArr = updateToggleValue(items, action.id, 'checked');
-      const isAllChecked = newArr.filter((element) => element.id !== 1).every((element) => element.checked);
+      let newArray = updateToggleValue(items, action.id, 'checked');
+      const isAllChecked = newArray.filter((element) => element.id !== 1).every((element) => element.checked);
 
       if (isAllChecked) {
-        newArr[0] = { ...newArr[0], checked: true };
+        newArray[0] = { ...newArray[0], checked: true };
       } else {
-        newArr[0] = { ...newArr[0], checked: false };
+        newArray[0] = { ...newArray[0], checked: false };
       }
 
       return {
         ...state,
-        items: newArr,
+        items: newArray,
       };
     }
     case types.FILTER_ALL: {
-      const newArr = state.items.map((element) => {
+      const newArray = state.items.map((element) => {
         const isChecked = !state.items[0]['checked'];
         return {
           ...element,
@@ -41,7 +41,7 @@ export const filtersReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        items: newArr,
+        items: newArray,
       };
     }
     default:
