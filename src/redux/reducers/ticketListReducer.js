@@ -7,6 +7,7 @@ const initialState = {
   stop: false,
   searchId: '',
   error: false,
+  countPack: 0,
 };
 
 export const ticketListReducer = (state = initialState, action) => {
@@ -20,18 +21,24 @@ export const ticketListReducer = (state = initialState, action) => {
     }
     case types.LOAD_TICKETS: {
       const tickets = action.data['tickets'].map((element) => {
-        element.id = uuidv4();
-        return element;
+        return { ...element, id: uuidv4() };
       });
       const newTickets = [...state.tickets, ...tickets];
       const stop = action.data['stop'];
-      const error = action.error;
+      const error = action.data['error'];
+
+      let progress;
+
+      if (!error) {
+        progress = JSON.parse(JSON.stringify(state.countPack)) + 1;
+      }
 
       return {
         ...state,
         tickets: newTickets,
         stop,
         error,
+        countPack: progress,
       };
     }
     default:

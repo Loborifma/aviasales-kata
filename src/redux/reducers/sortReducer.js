@@ -9,7 +9,7 @@ export const sortReducer = (state = initialState, action) => {
     case types.SORT:
       return {
         ...state,
-        filter: action.id,
+        sort: action.id,
       };
     default:
       return state;
