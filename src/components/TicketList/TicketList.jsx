@@ -35,22 +35,19 @@ export const TicketList = () => {
   }, []);
 
   useEffect(() => {
-    if (!session.stop && session.searchId) {
-      dispatch(loadTickets(session.searchId));
+    if (!session.stop) {
+      if (session.searchId) dispatch(loadTickets(session.searchId));
+    } else {
+      const sortedPack = updatePackTickets(session.tickets, sortMethod, session.tickets.length);
+      updateChunkTickets(sortedPack, chunkedTickets.length);
     }
+
     if (isFirstPack && session.tickets.length) {
       setIsFirstPack(false);
       const sortedPack = updatePackTickets(session.tickets, sortMethod);
       updateChunkTickets(sortedPack);
     }
   }, [session.searchId, session.tickets, session.error]);
-
-  useEffect(() => {
-    if (chunkedTickets.length >= packedTickets.length - 60 && packedTickets.length) {
-      const sortedTickets = updatePackTickets(session.tickets, sortMethod, packedTickets.length);
-      updateChunkTickets(sortedTickets, chunkedTickets.length);
-    }
-  }, [chunkedTickets]);
 
   useEffect(() => {
     if (packedTickets.length) {
@@ -68,7 +65,7 @@ export const TicketList = () => {
   };
 
   const updatePackTickets = (tickets, sortMethod, lengthTicketArray = 0, filters = []) => {
-    const extendedLengthArray = lengthTicketArray ? lengthTicketArray * 1.5 : _lengthTicketArrayPerPack;
+    const extendedLengthArray = lengthTicketArray ? lengthTicketArray : _lengthTicketArrayPerPack;
     const generator = getAmountTickets(tickets, extendedLengthArray);
     const nextPack = generator.next().value;
     const filteredPack = filterTickets(nextPack, filters);
@@ -87,7 +84,7 @@ export const TicketList = () => {
     if (lengthTicketArray) {
       prevChunkTickets = getAmountTickets(sortedTickets, lengthTicketArray).next().value;
     }
-    const chunkGenerator = getAmountTickets(sortedTickets, undefined, lengthTicketArray);
+    const chunkGenerator = getAmountTickets(sortedTickets, 5, lengthTicketArray);
     setChunkTicketGenerator(chunkGenerator);
     const nextChunk = chunkGenerator.next().value;
     setChunkedTickets([...prevChunkTickets, ...nextChunk]);

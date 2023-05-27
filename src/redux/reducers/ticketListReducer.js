@@ -29,8 +29,10 @@ export const ticketListReducer = (state = initialState, action) => {
 
       let progress;
 
-      if (!error) {
+      if (!error && !state.stop) {
         progress = JSON.parse(JSON.stringify(state.countPack)) + 1;
+      } else {
+        progress = state.countPack;
       }
 
       return {

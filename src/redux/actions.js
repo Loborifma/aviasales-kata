@@ -45,7 +45,7 @@ export function loadTickets(searchId) {
       const jsonData = await response.json();
       dispatch({
         type: types.LOAD_TICKETS,
-        data: jsonData,
+        data: { ...jsonData, error: false },
       });
     } catch (error) {
       switch (response.status) {
@@ -57,8 +57,7 @@ export function loadTickets(searchId) {
           loadTickets(searchId);
           dispatch({
             type: types.LOAD_TICKETS,
-            data: { tickets: [], stop: false },
-            error: true,
+            data: { tickets: [], stop: false, error: true },
           });
           break;
         }
