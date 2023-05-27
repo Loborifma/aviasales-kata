@@ -80,14 +80,14 @@ export const TicketList = () => {
   };
 
   const updateChunkTickets = (sortedTickets, lengthTicketArray = 0) => {
-    let prevChunkTickets = [];
+    let prevChunkTickets;
     if (lengthTicketArray) {
       prevChunkTickets = getAmountTickets(sortedTickets, lengthTicketArray).next().value;
     }
     const chunkGenerator = getAmountTickets(sortedTickets, 5, lengthTicketArray);
     setChunkTicketGenerator(chunkGenerator);
     const nextChunk = chunkGenerator.next().value;
-    setChunkedTickets([...prevChunkTickets, ...nextChunk]);
+    setChunkedTickets(prevChunkTickets || nextChunk);
   };
 
   return (
