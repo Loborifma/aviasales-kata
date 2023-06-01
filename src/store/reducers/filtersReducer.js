@@ -1,4 +1,4 @@
-import { updateToggleValue } from '../../utils/utils';
+import { updateToggleValue } from '../../utils/common';
 import * as types from '../types';
 
 const initialState = {

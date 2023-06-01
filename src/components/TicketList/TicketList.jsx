@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Ticket from '../Ticket';
 import Pagination from '../Pagination';
 import './TicketList.scss';
-import { initSearchId, loadTickets } from '../../redux/actions';
-import { getAmountTickets, sortTickets, filterTickets } from '../../utils/utils.js';
+import { initSearchId, loadTickets } from '../../store/actions';
+import { getAmountTickets, sortTickets, filterTickets } from '../../utils/ticketUtils.js';
 import ProgressBar from '../ProgressBar';
 
 export const TicketList = () => {
