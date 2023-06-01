@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './Tabs.scss';
-import { sort } from '../../redux/actions';
+import { sort } from '../../store/actions';
 
 export const Tabs = () => {
   const options = [
